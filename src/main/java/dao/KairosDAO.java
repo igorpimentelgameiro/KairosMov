@@ -2,7 +2,10 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import conexaojdbc.Conexao;
 import model.Userkairosmov;
@@ -41,5 +44,28 @@ public class KairosDAO
 			  }
 				e.printStackTrace();
 		 }
+	}
+	
+	public List<Userkairosmov> listar () throws Exception
+	{
+		List<Userkairosmov> list = new ArrayList<Userkairosmov>();
+		
+		String sql = "select * from membroskairos";
+		
+		PreparedStatement statement = connection.prepareStatement(sql);
+		ResultSet resultado = statement.executeQuery();
+		
+		while (resultado.next()) 
+		{
+			Userkairosmov userkairosmov = new Userkairosmov();
+			userkairosmov.setId(resultado.getLong("id"));
+			userkairosmov.setNome(resultado.getString("nome"));
+			userkairosmov.setEmail(resultado.getString("email"));
+			userkairosmov.setIdade(resultado.getInt("idade"));
+			userkairosmov.setMinisterio(resultado.getString("ministerio"));
+			list.add(userkairosmov);
+		}
+		
+		return list;
 	}
 }
